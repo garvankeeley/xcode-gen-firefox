@@ -56,7 +56,7 @@ def add_src_dir(s, sources):
 
 if __name__ == "__main__":
     if sys.argv.__len__() != 3:
-        print('Args: <path to firefox source> <patch to objdir> ')
+        print('Args: <path to firefox source> <path to objdir> ')
         sys.exit(1)
 
     try:
