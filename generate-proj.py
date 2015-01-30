@@ -5,7 +5,13 @@ import os
 import re
 import shutil
 from collections import defaultdict
-    
+
+try:
+    from mod_pbxproj.mod_pbxproj import XcodeProject
+except:
+    print "Module missing. Incomplete git clone! Run `git submodule update --init --recursive`"
+    sys.exit(1)
+
 path_to_src = ''
 path_to_objdir = ''
 sources = dict()
@@ -47,7 +53,7 @@ def add_src_dir(s, sources):
         if not s in sources:
             sources[s] = dict()
             return sources[s]
-        
+
 if __name__ == "__main__":
     if sys.argv.__len__() != 3:
         print('Args: <path to firefox source> <patch to objdir> ')
@@ -58,7 +64,7 @@ if __name__ == "__main__":
     except:
         pass
     shutil.copy('stub_project.pbxproj', 'firefox.xcodeproj/project.pbxproj')
-    
+
     path_to_src = os.path.abspath(sys.argv[1])
     path_to_objdir = os.path.abspath(sys.argv[2])
 
@@ -66,12 +72,12 @@ if __name__ == "__main__":
     backends = find(path_to_objdir, 'backend.mk')
     backends.update({'/nsprpub/config': 'autoconf.mk',
                      '/config' : ('autoconf.mk','autoconf-js.mk')})
-     
+
     sys.path.append('/tmp')
-    
+
     def extract_headers(s):
         return set(re.findall(r" '?(\S+\.h)\b", s))
-    
+
     for key,value in mozbuilds.iteritems():
         int = open('/tmp/xcode_gen.py', 'w')
         int.write("from collections import defaultdict\n")
@@ -94,13 +100,13 @@ if __name__ == "__main__":
                     if not '' in src_dict:
                         src_dict[''] = set()
                     src_dict[''] |= extract_headers(content[i])
-                    
+
                 if found_uni and content[i].strip() == ']':
                     int.write(content[i])
                     last_line_written = i
                     found_uni = False
                     continue
-                
+
                 if 'UNIFIED_SOURCES' in content[i]:
                     found_uni = True
                     if content[i][0] == ' ':
@@ -123,23 +129,22 @@ if __name__ == "__main__":
                     last_line_written = i
                     if content[i].strip().endswith(']'):
                         found_uni = False
-                    
-                    
-        has_data = int.tell() - file_size > 1 
+
+        has_data = int.tell() - file_size > 1
         int.close()
-        
+
         if not has_data :
             continue
-        
+
         try:
             xcode_gen
             os.remove('/tmp/xcode_gen.pyc')
             reload(xcode_gen)
         except NameError:
             pass
-        
+
         import xcode_gen
-        
+
         unified = set([path_join(key, x) for x in xcode_gen.UNIFIED_SOURCES])
         hfiles = []
         for cfile in unified:
@@ -148,17 +153,17 @@ if __name__ == "__main__":
                 hfiles.append(hfile)
         unified |= set(hfiles)
         unified_sources |= unified
-        
+
     def extract_defines(s):
         defs = re.findall(r'-D(\S+)', s)
         defs = [x for x in defs if not re.search('\/|XPCOM_GLUE|CC=|CXX=|CFLAGS|target=', x)]
         return set(defs)
-    
+
     def extract_include(s):
         incs = re.findall(r'-I(\S+)', s)
         incs = [x for x in incs if '//' not in x]
         return set(incs)
-    
+
     def process_backend(key, value):
         global defines, includes
         infile = path_join(path_to_objdir, key, value)
@@ -179,17 +184,17 @@ if __name__ == "__main__":
                     line = line.replace('$(srcdir)', path_to_src + key)
                     line = line.replace('$(LIBXUL_DIST)', path_join(path_to_objdir, 'dist'))
                     includes |= extract_include(line)
-    
+
     for key,value in backends.iteritems():
         if isinstance(value, tuple):
             for i in value:
                 process_backend(key, i)
         else:
             process_backend(key, value)
-        
-                    
+
+
     # missing stuff
-    includes.update([path_join(path_to_objdir, 'ipc/ipdl/_ipdlheaders'), 
+    includes.update([path_join(path_to_objdir, 'ipc/ipdl/_ipdlheaders'),
                      path_join(path_to_objdir, 'dist/include'),
                      path_join(path_to_objdir, 'js/src/ctypes/libffi/include'),
                      path_join(path_to_objdir, 'dist/include/mozilla'),
@@ -198,8 +203,7 @@ if __name__ == "__main__":
                      path_join(path_to_objdir, 'dist/include/nspr')])
     #defines.update(['ACCESSIBILITY', 'MOZILLA_INTERNAL_API', 'XP_MACOSX', 'MOZ_WIDGET_COCOA', 'MOZ_XUL=1'])
     #-DMOZILLA_CLIENT -DMOZ_MEDIA_NAVIGATOR -DAB_CD=en-US -DNO_NSPR_10_SUPPORT
-    
-    from mod_pbxproj.mod_pbxproj import XcodeProject
+
     project = XcodeProject.Load('firefox.xcodeproj/project.pbxproj')
 
     def create(d, parent=None, parent_path=None):
@@ -217,9 +221,9 @@ if __name__ == "__main__":
             else:
                 for src in sorted(v):
                     project.add_file(path_join(parent_path, src), parent=parent)
-                
+
     create(sources)
-    
+
     #project.backup()
     project.save()
 
@@ -229,7 +233,7 @@ if __name__ == "__main__":
         item = item.replace('\\', '')
         if item.count("'")%2 != 0 or item.count('"')%2 != 0:
             continue
-            
+
         loc = item.find('=')
         if loc > -1:
             key = item[0:loc]
@@ -238,11 +242,11 @@ if __name__ == "__main__":
         if not prev or (prev and prev != key):
             defines_sorted.append(item)
         prev = key
-    
+
     shutil.copyfile('stub_xcconfig','config.xcconfig')
     f = open('config.xcconfig', 'a')
     f.write("GCC_PREFIX_HEADER = " + path_join(path_to_src, 'memory/mozalloc/mozalloc.h'))
     f.write("\nGCC_PREPROCESSOR_DEFINITIONS = " + ' '.join(defines_sorted))
     f.write("\nHEADER_SEARCH_PATHS = " + ' '.join(includes))
     f.close()
-    
+
