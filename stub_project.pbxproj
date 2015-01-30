@@ -1,0 +1,169 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EB1183CC1A75F4ED0094CA96 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		EB1183CE1A75F4ED0094CA96 /* firefox */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = firefox; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB1183D81A75F5080094CA96 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EB1183CB1A75F4ED0094CA96 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EB1183C51A75F4ED0094CA96 = {
+			isa = PBXGroup;
+			children = (
+				EB1183D81A75F5080094CA96 /* config.xcconfig */,
+				EB1183CF1A75F4ED0094CA96 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EB1183CF1A75F4ED0094CA96 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EB1183CE1A75F4ED0094CA96 /* firefox */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EB1183CD1A75F4ED0094CA96 /* firefox */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB1183D51A75F4ED0094CA96 /* Build configuration list for PBXNativeTarget "firefox" */;
+			buildPhases = (
+				EB1183CA1A75F4ED0094CA96 /* Sources */,
+				EB1183CB1A75F4ED0094CA96 /* Frameworks */,
+				EB1183CC1A75F4ED0094CA96 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = firefox;
+			productName = firefox;
+			productReference = EB1183CE1A75F4ED0094CA96 /* firefox */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EB1183C61A75F4ED0094CA96 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Garvan Keeley";
+				TargetAttributes = {
+					EB1183CD1A75F4ED0094CA96 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
+			};
+			buildConfigurationList = EB1183C91A75F4ED0094CA96 /* Build configuration list for PBXProject "firefox" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EB1183C51A75F4ED0094CA96;
+			productRefGroup = EB1183CF1A75F4ED0094CA96 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EB1183CD1A75F4ED0094CA96 /* firefox */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EB1183CA1A75F4ED0094CA96 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		EB1183D31A75F4ED0094CA96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB1183D81A75F5080094CA96 /* config.xcconfig */;
+			buildSettings = {
+				
+			};
+			name = Debug;
+		};
+		EB1183D41A75F4ED0094CA96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB1183D81A75F5080094CA96 /* config.xcconfig */;
+			buildSettings = {
+				
+			};
+			name = Release;
+		};
+		EB1183D61A75F4ED0094CA96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		EB1183D71A75F4ED0094CA96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EB1183C91A75F4ED0094CA96 /* Build configuration list for PBXProject "firefox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB1183D31A75F4ED0094CA96 /* Debug */,
+				EB1183D41A75F4ED0094CA96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB1183D51A75F4ED0094CA96 /* Build configuration list for PBXNativeTarget "firefox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB1183D61A75F4ED0094CA96 /* Debug */,
+				EB1183D71A75F4ED0094CA96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EB1183C61A75F4ED0094CA96 /* Project object */;
+}
