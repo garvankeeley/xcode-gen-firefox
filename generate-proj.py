@@ -52,8 +52,12 @@ if __name__ == "__main__":
     if sys.argv.__len__() != 3:
         print('Args: <path to firefox source> <patch to objdir> ')
         sys.exit(1)
- 
-    shutil.copy('stub_project.pbxproj', 'test.xcodeproj/project.pbxproj')
+
+    try:
+        os.mkdir('firefox.xcodeproj')
+    except:
+        pass
+    shutil.copy('stub_project.pbxproj', 'firefox.xcodeproj/project.pbxproj')
     
     path_to_src = os.path.abspath(sys.argv[1])
     path_to_objdir = os.path.abspath(sys.argv[2])
@@ -196,7 +200,7 @@ if __name__ == "__main__":
     #-DMOZILLA_CLIENT -DMOZ_MEDIA_NAVIGATOR -DAB_CD=en-US -DNO_NSPR_10_SUPPORT
     
     from mod_pbxproj.mod_pbxproj import XcodeProject
-    project = XcodeProject.Load('test.xcodeproj/project.pbxproj')
+    project = XcodeProject.Load('firefox.xcodeproj/project.pbxproj')
 
     def create(d, parent=None, parent_path=None):
         it = iter(sorted(d.iteritems()))
