@@ -15,7 +15,7 @@ except:
 path_to_src = ''
 path_to_objdir = ''
 sources = dict()
-unified_sources = set()
+unified_sources = dict()
 defines = set()
 other_flags = set()
 includes = set()
@@ -84,6 +84,7 @@ if __name__ == "__main__":
         int.write("CONFIG = defaultdict(lambda: '')\n")
         int.write("CONFIG['MOZ_WIDGET_TOOLKIT'] = 'cocoa'\n")
         int.write("CONFIG['OS_TARGET'] = 'Darwin'\n")
+        int.write("CONFIG['OS_ARCH'] = 'Darwin'\n")
         int.write("CONFIG['NECKO_COOKIES'] = 1\n")
         int.write("SOURCES=[]\nUNIFIED_SOURCES=[]\n")
         int.write("DEFINES= defaultdict(lambda:None)\n")
@@ -144,15 +145,21 @@ if __name__ == "__main__":
             pass
 
         import xcode_gen
-
+        
         unified = set([path_join(key, x) for x in xcode_gen.UNIFIED_SOURCES])
         hfiles = []
+        cfiles = []
         for cfile in unified:
             hfile = cfile.rsplit('.',1)[0] + '.h'
             if os.path.isfile(path_join(path_to_src, hfile)):
-                hfiles.append(hfile)
-        unified |= set(hfiles)
-        unified_sources |= unified
+                            hfiles.append(hfile.rsplit('/')[-1])
+            cfiles.append(cfile.rsplit('/')[-1])
+        unified = set(hfiles) | set(cfiles)
+        
+        unified_src_dict = add_src_dir(key, unified_sources)
+        if not '' in unified_src_dict:
+            unified_src_dict[''] = set()
+        unified_src_dict[''] |= unified
 
     def extract_defines(s):
         defs = re.findall(r'-D(\S+)', s)
@@ -188,11 +195,20 @@ if __name__ == "__main__":
     for key,value in backends.iteritems():
         if isinstance(value, tuple):
             for i in value:
-                process_backend(key, i)
+                try:
+                    process_backend(key, i)
+                except:
+                    pass
         else:
-            process_backend(key, value)
+            try:
+                process_backend(key, value)
+            except:
+                pass
 
-
+    #print sources
+    print sources['dom']['geolocation']
+    print unified_sources['dom']['geolocation']
+    
     # missing stuff
     includes.update([path_join(path_to_objdir, 'ipc/ipdl/_ipdlheaders'),
                      path_join(path_to_objdir, 'dist/include'),
@@ -223,7 +239,8 @@ if __name__ == "__main__":
                     project.add_file(path_join(parent_path, src), parent=parent)
 
     create(sources)
-
+    create(unified_sources)
+    
     #project.backup()
     project.save()
 
