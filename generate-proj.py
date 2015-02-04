@@ -176,7 +176,7 @@ if __name__ == "__main__":
         infile = path_join(path_to_objdir, key, value)
         with open(infile) as f:
             for line in f:
-                m = re.search(r'[A-Z]+SRCS .?= (.+)(\.cpp|\.c|\.m|\.mm|\.cc)', line)
+                m = re.search(r'[A-Z]+SRCS .?= (.+)(\.cpp|\.mm|\.cc\.c|\.m)', line)
                 if ('Unified_' not in line and '.mn' not in line and
                     '.manifest' not in line and ":" not in line and m):
                     src_dict = add_src_dir(key, sources)
@@ -204,10 +204,6 @@ if __name__ == "__main__":
                 process_backend(key, value)
             except:
                 pass
-
-    #print sources
-    print sources['dom']['geolocation']
-    print unified_sources['dom']['geolocation']
     
     # missing stuff
     includes.update([path_join(path_to_objdir, 'ipc/ipdl/_ipdlheaders'),
