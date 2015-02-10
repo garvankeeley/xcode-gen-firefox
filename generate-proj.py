@@ -27,12 +27,17 @@ def path_join(base, *others):
 def find(rootdir, file):
     matches = {}
     for root, dirs, filenames in os.walk(rootdir):
-        dirs[:] = [d for d in dirs if not d[0] == '.' \
-                   if not d[0]== '_' \
-                   if not 'win32' in d \
-                   if not 'libopus' in d \
-                   if not 'sctp' in d \
-                   if not 'libvpx' in d]
+        dirs[:] = [d for d in dirs if not d[0] == '.' 
+                   if not d[0]== '_'
+                   if not 'win32' in d
+                   if not 'libopus' in d
+                   if not 'sctp' in d
+                   if not 'libvpx' in d
+                   if not 'windows' in d
+                   if not 'gonk' in d
+                   if not 'wmf' in d
+                   if not 'atk' in d
+                   if not 'test' in d]
         for filename in filenames:
             if filename == file:
                 matches[root.replace(rootdir, '')] = filename
@@ -70,8 +75,8 @@ if __name__ == "__main__":
 
     mozbuilds = find(path_to_src, 'moz.build')
     backends = find(path_to_objdir, 'backend.mk')
-    backends.update({'/nsprpub/config': 'autoconf.mk',
-                     '/config' : ('autoconf.mk','autoconf-js.mk')})
+    #backends.update({'/nsprpub/config': 'autoconf.mk',
+    #                 '/config' : ('autoconf.mk','autoconf-js.mk')})
 
     sys.path.append('/tmp')
 
@@ -92,7 +97,7 @@ if __name__ == "__main__":
         infile = path_join(path_to_src, key, value)
         found = 0
         with open(infile) as f:
-            content = f.readlines();
+            content = f.readlines()
             found_uni = False
             last_line_written = -1
             for i in range(content.__len__()):
@@ -258,7 +263,7 @@ if __name__ == "__main__":
 
     shutil.copyfile('stub_xcconfig','config.xcconfig')
     f = open('config.xcconfig', 'a')
-    f.write("GCC_PREFIX_HEADER = " + path_join(path_to_src, 'memory/mozalloc/mozalloc.h'))
+    f.write("GCC_PREFIX_HEADER = " + path_join(path_to_objdir, 'mozilla-config.h'))
     f.write("\nGCC_PREPROCESSOR_DEFINITIONS = " + ' '.join(defines_sorted))
     f.write("\nHEADER_SEARCH_PATHS = " + ' '.join(includes))
     f.close()
