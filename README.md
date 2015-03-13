@@ -1,4 +1,8 @@
 # xcode-gen-firefox
+
+Don't use this :). Use this instead:
+https://bugzilla.mozilla.org/show_bug.cgi?id=1063329
+
 Generate an Xcode project for firefox editing. This won't fully compile, but is useful for code completion and project navigation. It is also useful for debugging through Xcode.
 
 clone with `git clone --recursive` to get the required submodule
